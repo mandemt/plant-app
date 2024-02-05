@@ -1,0 +1,17 @@
+.plantinputs {
+    background-color: orange;
+    display:flex;
+    flex-direction:column;
+    width:50%;
+}
+input{
+    height: 25px;
+    width: 50%;
+    display:flex;
+    margin: 10px 0;
+}
+button{
+    width: 50%;
+    background-color: grey;
+    color:white;
+}
