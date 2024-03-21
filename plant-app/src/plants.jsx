@@ -44,7 +44,9 @@ if(this.state.plants.length == 0){
         })
 
     }
-
+    checkId(e){
+    
+    }
     changeValue(e) {
         let stateName = e.target.id
         this.setState({ [e.target.id]: e.target.value })
@@ -55,9 +57,9 @@ if(this.state.plants.length == 0){
     render() {
 
         let planten = this.state.plants.map(plant => {
-            let link = plant.id
+            let link = plant.plant_id
             return (
-                <a href={'planten/' + link} key={plant.id}>{plant.plant_name}</a>
+                <a href={'planten/' + link} onClick={() => checkID(e)}key={plant.plant_id}>{plant.plant_name}</a>
             )
         })
 

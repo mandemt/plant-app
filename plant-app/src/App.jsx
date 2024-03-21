@@ -22,7 +22,6 @@ function App() {
       <a href="/planten"> planten</a>
       <ul>
 
-
       </ul>
     </div>
   )
