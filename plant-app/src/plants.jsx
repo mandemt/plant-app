@@ -1,33 +1,32 @@
 import React, { useState } from 'react'
 
 class Plants extends React.Component {
+    componentDidMount() {
+        this.fetchPlants()
+    }
     constructor(props) {
         super(props);
 
         this.state = {
-            hoi: [
-                { name: 'plant', family: 'family', group: 'group', color: 'color', invasive: 'invasive' }
-            ],
+            errorMessage: '',
             plants: [],
-            newPlant: 'default'
+            newPlant: 'default',
+            incomplete: []
         }
         this.fetchPlants = this.fetchPlants.bind(this)
         this.postPlants = this.postPlants.bind(this)
         this.changeValue = this.changeValue.bind(this)
-     
+
     }
     fetchPlants(e) {
-        console.log(this.state.plants)
-if(this.state.plants.length == 0){
         fetch('http://localhost:3307/planten')
             .then(res => res.json())
             .then(data => this.setState({ plants: data }))
-            .then(console.log('hoi'))
             .catch(error => console.log(error))
-}
 
     }
     postPlants(e) {
+        let incomplete = []
         const postData = [{
             name: this.state.plantname,
             family: this.state.plantfamily,
@@ -35,31 +34,40 @@ if(this.state.plants.length == 0){
             color: this.state.plantcolor,
             invasive: this.state.invasive
         }]
-        fetch('http://localhost:3307/anders', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(postData)
-        })
+        let formFields = Object.keys(postData[0])
 
+        formFields.forEach((data) => {
+            if (postData[0][data] == undefined) {
+                incomplete.push(data)
+                this.setState({errorMessage: "de volgende velden zijn niet ingevuld:" + incomplete})
+            }
+
+
+        })
+        this.setState({ incomplete: incomplete })
+        if (incomplete.length == 0) {
+            fetch('http://localhost:3307/anders', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(postData)
+            })
+        }
+        this.fetchPlants()
     }
-    checkId(e){
-    
-    }
+
     changeValue(e) {
         let stateName = e.target.id
         this.setState({ [e.target.id]: e.target.value })
-        console.log(this.state.plantname)
-        console.log(stateName)
     }
 
     render() {
-
+        let errorMessage = this.state.errorMessage
         let planten = this.state.plants.map(plant => {
             let link = plant.plant_id
             return (
-                <a href={'planten/' + link} onClick={() => checkID(e)}key={plant.plant_id}>{plant.plant_name}</a>
+                <a href={'planten/' + link} onClick={() => checkID(e)} key={plant.plant_id}>{plant.plant_name}</a>
             )
         })
 
@@ -71,12 +79,8 @@ if(this.state.plants.length == 0){
                 Plant hoofdgroep  <input id="plantgroup" onChange={(e) => { this.changeValue(e) }} type="text"></input>
                 Plant bloemkleur  <input id="plantcolor" onChange={(e) => { this.changeValue(e) }} type="text"></input>
                 Invasief <input id="invasive" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-
-                <button onClick={() => this.fetchPlants()}>klik</button>
-                <input onChange={(e) => {
-                    this.changeValue(e)
-                }} type="text"></input> <button value="['tom','plant']" onClick={(e) => this.postPlants(e)}>post plant</button>
-
+               <button value="['tom','plant']" onClick={(e) => this.postPlants(e)}>post plant</button>
+               {errorMessage}
                 {planten}
             </div>
         )
