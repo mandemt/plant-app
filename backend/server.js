@@ -108,13 +108,13 @@ app.get('/anders', (req, res) => {
 app.post('/anders', (req, res) => {
     let insertData = req.body[0]
     const sql = ["INSERT INTO plants (plant_id, plant_name, plant_family, plant_hoofdgroep, plant_bloemkleur, invasief) VALUES (NULL, ?,?,?,?,?)",
-    "INSERT INTO plant_watcher (plant_id, plant_watched) VALUES((SELECT MAX(plant_id) FROM plants), 0)"]
-  let insertplant =  db.query(sql[0], [insertData.name, insertData.family, insertData.group, insertData.color, insertData.invasive], (err, data) => {
+        "INSERT INTO plant_watcher (plant_id, plant_watched) VALUES((SELECT MAX(plant_id) FROM plants), 0)"]
+    let insertplant = db.query(sql[0], [insertData.name, insertData.family, insertData.group, insertData.color, insertData.invasive], (err, data) => {
         if (err) {
             console.log(err)
         }
     })
-    let watcher =  db.query(sql[1],0, (err, data) => {
+    let watcher = db.query(sql[1], 0, (err, data) => {
         if (err) {
             console.log(err)
         }
@@ -122,6 +122,33 @@ app.post('/anders', (req, res) => {
     })
 
 })
+
+app.get('/kenmerken', (req, res) => {
+    const sql = "SELECT * FROM properties";
+    db.query(sql, (err, data) => {
+        console.log(data)
+
+        return res.json(data)
+    })
+})
+
+app.post('/kenmerken/:id', (req, res) => {
+    
+    console.log(req.body.id)
+    const sql = ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants "]
+   let search =  db.query(sql[0], req.body.id, (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+        let searchFor = data[0].property_name
+        console.log(searchFor)
+
+        let go = db.query(sql[1], searchFor, (err, data) => {
+            if (err) {
+                console.log(err)
+            }
+        return res.json(data)
+})})})
 app.listen(3307, () => {
     console.log('server luistert')
 })

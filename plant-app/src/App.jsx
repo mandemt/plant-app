@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Plants from '../src/plants.jsx';
 import Plant from '../src/plant.jsx';
-const product_id = window.location.href.split("/");
-console.log(product_id[4])
+import Properties from './properties.jsx';
+import Property from './property.jsx'
 function App() {
-
   return (
     <div>
       <Router>
@@ -14,12 +13,22 @@ function App() {
         <Route path="/planten" element={<Plants />}>
         </Route>
 
-        <Route path={"/planten/" + product_id[4]}  element={<Plant />}>
+        <Route path={"/planten/:id"}  element={<Plant />}>
 
         </Route>
+        <Route path={"/kenmerken"}  element={<Properties />}>
+        </Route>
+
+        <Route path={"/kenmerken/:id"}  element={<Property />}>
+        </Route>
+
+
+    
       </Routes>
       </Router>
       <a href="/planten"> planten</a>
+      <a href="/kenmerken"> kenmerken</a>
+
       <ul>
 
       </ul>
