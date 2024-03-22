@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+
 class Properties extends React.Component {
     componentDidMount() {
         this.fetchPlants()

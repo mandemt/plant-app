@@ -107,7 +107,7 @@ app.get('/anders', (req, res) => {
 
 app.post('/anders', (req, res) => {
     let insertData = req.body[0]
-    const sql = ["INSERT INTO plants (plant_id, plant_name, plant_family, plant_hoofdgroep, plant_bloemkleur, invasief) VALUES (NULL, ?,?,?,?,?)",
+    const sql = ["INSERT INTO plants (plant_id, plant_name, plant_family, plant_hoofdgroep, plant_color, invasive) VALUES (NULL, ?,?,?,?,?)",
         "INSERT INTO plant_watcher (plant_id, plant_watched) VALUES((SELECT MAX(plant_id) FROM plants), 0)"]
     let insertplant = db.query(sql[0], [insertData.name, insertData.family, insertData.group, insertData.color, insertData.invasive], (err, data) => {
         if (err) {
