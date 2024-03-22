@@ -43,7 +43,7 @@ class Plants extends React.Component {
                                 <div>
                                     <p> Plantnaam: {plant.plant_name}</p>
                                     <p> Plant familie:{plant.plant_family}</p>
-                                    <p>Plant kleur: {plant.plant_bloemkleur}</p>
+                                    <p>Plant kleur: {plant.plant_color}</p>
                                     <p>  Plant hoofdgroep: {plant.plant_hoofdgroep}</p>
                                     <p>Plant ID {plant.plant_id}</p>
                                     <p>  Aantal keer deze plant bekeken {plant.plant_watched}</p>

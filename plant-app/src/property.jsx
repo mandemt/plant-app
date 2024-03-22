@@ -11,14 +11,15 @@ class Property extends React.Component {
         this.state = {
             property: [],
             results: [],
-            propname: ''
+            propname: '',
+            postData: {}
         }
 
     }
 
     fetchPlants() {
         let postData = { id: Number(window.location.href.split("/")[4]) }
-        console.log(postData)
+        this.setState({postData: postData})
         fetch('http://localhost:3307/kenmerken/:id', {
             method: 'POST',
             headers: {
@@ -35,15 +36,18 @@ class Property extends React.Component {
 
     render() {
         let props = this.state.results
-
+        let typen = this.state.postData
         return (
             <div>
-
                 {
+                            
+                    
                     Object.keys(props).map(function (key) {
                         let value = props[key]
                         return (
-                            <h1>{Object.values(value)}</h1>
+                            <div>
+                            <a href={"/kenmerken/" + typen.id + "/" + Object.values(value)}>{Object.values(value)}</a>
+                           </div>
                         )
                     })
                 }

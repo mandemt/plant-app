@@ -5,6 +5,8 @@ import Plants from '../src/plants.jsx';
 import Plant from '../src/plant.jsx';
 import Properties from './properties.jsx';
 import Property from './property.jsx'
+import PropertyList from './propertylist.jsx'
+
 function App() {
   return (
     <div>
@@ -20,6 +22,8 @@ function App() {
         </Route>
 
         <Route path={"/kenmerken/:id"}  element={<Property />}>
+        </Route>
+        <Route path={"/kenmerken/:id/:id"}  element={<PropertyList />}>
         </Route>
 
 

@@ -133,10 +133,10 @@ app.get('/kenmerken', (req, res) => {
 })
 
 app.post('/kenmerken/:id', (req, res) => {
-    
+
     console.log(req.body.id)
     const sql = ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants "]
-   let search =  db.query(sql[0], req.body.id, (err, data) => {
+    let search = db.query(sql[0], req.body.id, (err, data) => {
         if (err) {
             console.log(err)
         }
@@ -147,8 +147,30 @@ app.post('/kenmerken/:id', (req, res) => {
             if (err) {
                 console.log(err)
             }
-        return res.json(data)
-})})})
+            return res.json(data)
+        })
+    })
+})
+
+app.post('/kenmerken/:id/:id', (req, res) => {
+    let body = req.body
+    let alles = {property_info: '', plant_info: []}
+    const sql = ["SELECT * FROM properties WHERE property_id =? ", "SELECT * FROM plants WHERE ??=?"];
+  let searchPropName =  db.query(sql[0], body.propId, (err, data) => {
+alles.property_info = data[0]
+console.log(body)
+    db.query(sql[1], [alles.property_info.property_name, body.propName], (err, data) => {
+        alles.plant_info = data
+    res.json(alles)
+     
+    })
+
+})
+})
+
+
+
+
 app.listen(3307, () => {
     console.log('server luistert')
 })

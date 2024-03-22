@@ -64,6 +64,7 @@ class Plants extends React.Component {
 
     render() {
         let errorMessage = this.state.errorMessage
+        console.log(this.state.plants[0])
         let planten = this.state.plants.map(plant => {
             let link = plant.plant_id
             return (
