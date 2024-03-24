@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import propImg from './img/duizendknopen.jpg'
 
 class Plants extends React.Component {
     componentDidMount() {
@@ -38,13 +39,15 @@ class Plants extends React.Component {
     plantDetails() {
         if (this.state.newPlant.length !== 0) {
             return (
-                <div className="plants">
+                <div className="plant">
                     {this.state.newPlant.map((plant) => {
                         return (
                             <div>
                                 <div className="banner">
                                 <h1>{plant.plant_name}</h1>
-                                <img></img>
+                                <figure>
+                                <img src={propImg}></img>
+                                </figure>
                                 </div>
                                 <ul>
                                 <button onClick={() => this.savePlant(plant.plant_id)}>sla plant op</button>

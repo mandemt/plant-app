@@ -43,9 +43,9 @@ class PropertyList extends React.Component {
             properties = this.state.plants['property_info']
 
             return (
-                <>
-                    <h2>Kenmerk: {properties.property_name}, {this.state.postData.propName}</h2>
-                </>
+                <div className="banner">
+                    <h1> Kenmerk: {properties.property_name}, {this.state.postData.propName}</h1>
+                </div>
             )
         }
         else {
@@ -53,7 +53,7 @@ class PropertyList extends React.Component {
                 <h1>loadin</h1>
             )
         }
-       
+
 
     }
 
@@ -64,12 +64,16 @@ class PropertyList extends React.Component {
         let planten;
         if (this.state.plants.length !== 0) {
             planten = this.state.plants
-            return(
-<>
-           { planten['plant_info'].map(function(item, i){
-          return(  <a href={'/planten/' + item.plant_id}>{item.plant_name}</a>)  
-              })}
-           </>   )
+            return (
+                <ul>
+                    {planten['plant_info'].map(function (item, i) {
+                        return (
+                            <li>
+                        <a href={'/planten/' + item.plant_id}>{item.plant_name}</a>
+                        </li>
+                        )
+                    })}
+                </ul>)
 
         }
         else {
@@ -86,10 +90,12 @@ class PropertyList extends React.Component {
             <div>
                 {this.titleGenerator()}
                 Planten met dit gedeelde kenmerk:
+
                 {this.propertyMap()}
 
 
             </div>
+
         )
     }
 }

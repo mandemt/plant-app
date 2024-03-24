@@ -32,7 +32,7 @@ class Properties extends React.Component {
 
         return (
 
-            <div>
+            <div className="banner">
                 <h1>{this.props.title}</h1>
               {this.state.properties.map((property) => {
                             return (

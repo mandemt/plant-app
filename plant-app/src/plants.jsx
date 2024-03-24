@@ -53,7 +53,8 @@ class Plants extends React.Component {
                 <div className="plants">
                     <div className="banner">
                     <h1>{this.props.title}</h1>
-                    <img src={discoverIcon}></img>
+                    <figure>
+                    <img src={discoverIcon}></img></figure>
                     </div>
                     {this.planten()}
                 </div>

@@ -77,9 +77,11 @@ class Property extends React.Component {
             properties = this.state.results
             console.log(properties[1].watch_data.property_name)
             return(
+                <div className="banner">
                 <h1>
                Kenmerk:   {properties[1].watch_data.property_name}  
                 </h1>
+                </div>
             )
         }
         else {

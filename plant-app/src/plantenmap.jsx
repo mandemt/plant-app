@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import plantenMapIcon from './img/plantenmap.svg'
+import './plantenmap.scss';
 
 class Plantenmap extends React.Component {
     componentDidMount() {
@@ -61,7 +63,9 @@ class Plantenmap extends React.Component {
             <div className="plants">
                 <div className="banner">
                     <h1>plantenmap</h1>
-                    <img></img>
+                    <figure>
+                    <img src={plantenMapIcon}></img>
+                    </figure>
                 </div>
                 <p>Bekijk hier jouw opgeslagen planten uit de plantenmap</p>
                 {this.plantDetails()}
