@@ -94,40 +94,36 @@ app.get('/kenmerken', (req, res) => {
 app.post('/kenmerken/:id', (req, res) => {
   let id = req.body.id
 
-    const registerWatch = [{ getData: "SELECT * FROM properties  AS kenmerken JOIN property_watcher AS pw ON pw.property_id = kenmerken.property_id WHERE kenmerken.property_id=?" }, { postData: "UPDATE property_watcher SET property_watched=? WHERE property_id = ?" }]
-    db.query(registerWatch[0].getData, id, (err, data) => {
-        let result = data
+let einde = []
+    const registerWatch = [{getProperties: ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants"] }, { getData: "SELECT * FROM properties  AS kenmerken JOIN property_watcher AS pw ON pw.property_id = kenmerken.property_id WHERE kenmerken.property_id=?" }, { postData: "UPDATE property_watcher SET property_watched=? WHERE property_id = ?" }]
+   
+  db.query(registerWatch[0].getProperties[0], req.body.id, (err, data) => {
 
-            console.log('0')
-        //    postData(0)
-        // console.log(result)
-        postData(Number(result[0].property_watched))
-
-        function postData(result) {
-            db.query(registerWatch[1].postData, [(result + 1), id], (err, data) => {
-            })
-        }
-
-    })
-
-    const sql = ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants "]
-    let search = db.query(sql[0], req.body.id, (err, data) => {
-        if (err) {
-            console.log(err)
-        }
         let searchFor = data[0].property_name // naam van de property in database
+  
+  
+        let go = db.query(registerWatch[0].getProperties[1], searchFor, (err, data) => {
+            einde.push({property_data: data})
+        })
 
+        db.query(registerWatch[1].getData, id, (err, data) => {
+            let result = data
 
-
-
-        let go = db.query(sql[1], searchFor, (err, data) => {
-            if (err) {
-                console.log(err)
+            einde.push({watch_data: data[0]})
+            postData(Number(result[0].property_watched))
+    
+            function postData(result) {
+                db.query(registerWatch[2].postData, [(result + 1), id], (err, data) => {
+                })
             }
-            console.log(data)
-            return res.json(data)
+return res.json(einde)
+    
         })
     })
+   
+  
+
+ 
 })
 
 app.post('/kenmerken/:id/:id', (req, res) => {
