@@ -36,6 +36,7 @@ class Property extends React.Component {
 
     render() {
         let props = this.state.results
+        console.log(props)
         let typen = this.state.postData
         return (
             <div>

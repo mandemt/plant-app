@@ -24,7 +24,7 @@ const db = mysql.createConnection({
 
 )
 
-app.get('', (req, res) => {
+app.get('/', (req, res) => {
     console.log('yoo')
 
     return res.json("backend boodschap")
@@ -33,18 +33,11 @@ app.get('', (req, res) => {
 app.post('/planten/:id', (req, res) => {
     let id = Number(req.body[0].id)
     console.log(id)
-    // const query = "SELECT * FROM plants  AS planten JOIN profile AS p ON p.plant_id = planten.plant_id WHERE planten.plant_id=?"
-    // db.query(query, id, (err, data) => {
-    //     result.push(data[0].watched)
-    // return res.json(data)
-    // })
 
 
     const registerWatch = [{ getData: "SELECT * FROM plants  AS planten JOIN plant_watcher AS p ON p.plant_id = planten.plant_id WHERE planten.plant_id=?" }, { postData: "UPDATE plant_watcher SET plant_watched=? WHERE plant_id = ?" }]
-    console.log(registerWatch[0].getData)
     db.query(registerWatch[0].getData, id, (err, data) => {
         let result = data
-        console.log(result)
         postData(Number(result[0].plant_watched))
 
         return res.json(data)
@@ -54,38 +47,6 @@ app.post('/planten/:id', (req, res) => {
         }
     })
 
-
-
-
-    // db.query(registerWatch, result, id, (err, data) => {
-    // })
-    // let q_res = queries.map((q) => {
-    //     return db.query(q, id, (err, data) => {
-    //         console.log(data)
-    //         return data;
-    //     });
-    // });
-
-
-    //   console.log(JSON.stringify(result))
-    // return {
-    //     profiles: q_res[0],
-    //     planten: q_res[1]
-    // }
-
-    // console.log(res.json(q_res));
-
-    //return res.json(q_res);
-
-
-    //  const sql2 = "SELECT * FROM plants WHERE id=?"
-    // db.query(sql, id, (err, data) => {
-
-    // useData(data)
-    // })
-    // function useData(jo){
-    //  return res.json(jo)
-    // }
 })
 app.get('/planten', (req, res) => {
     const sql = "SELECT * FROM plants";
@@ -126,27 +87,44 @@ app.post('/anders', (req, res) => {
 app.get('/kenmerken', (req, res) => {
     const sql = "SELECT * FROM properties";
     db.query(sql, (err, data) => {
-        console.log(data)
-
         return res.json(data)
     })
 })
 
 app.post('/kenmerken/:id', (req, res) => {
+  let id = req.body.id
 
-    console.log(req.body.id)
+    const registerWatch = [{ getData: "SELECT * FROM properties  AS kenmerken JOIN property_watcher AS pw ON pw.property_id = kenmerken.property_id WHERE kenmerken.property_id=?" }, { postData: "UPDATE property_watcher SET property_watched=? WHERE property_id = ?" }]
+    db.query(registerWatch[0].getData, id, (err, data) => {
+        let result = data
+
+            console.log('0')
+        //    postData(0)
+        // console.log(result)
+        postData(Number(result[0].property_watched))
+
+        function postData(result) {
+            db.query(registerWatch[1].postData, [(result + 1), id], (err, data) => {
+            })
+        }
+
+    })
+
     const sql = ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants "]
     let search = db.query(sql[0], req.body.id, (err, data) => {
         if (err) {
             console.log(err)
         }
-        let searchFor = data[0].property_name
-        console.log(searchFor)
+        let searchFor = data[0].property_name // naam van de property in database
+
+
+
 
         let go = db.query(sql[1], searchFor, (err, data) => {
             if (err) {
                 console.log(err)
             }
+            console.log(data)
             return res.json(data)
         })
     })
@@ -154,18 +132,18 @@ app.post('/kenmerken/:id', (req, res) => {
 
 app.post('/kenmerken/:id/:id', (req, res) => {
     let body = req.body
-    let alles = {property_info: '', plant_info: []}
+    let alles = { property_info: '', plant_info: [] }
     const sql = ["SELECT * FROM properties WHERE property_id =? ", "SELECT * FROM plants WHERE ??=?"];
-  let searchPropName =  db.query(sql[0], body.propId, (err, data) => {
-alles.property_info = data[0]
-console.log(body)
-    db.query(sql[1], [alles.property_info.property_name, body.propName], (err, data) => {
-        alles.plant_info = data
-    res.json(alles)
-     
-    })
+    let searchPropName = db.query(sql[0], body.propId, (err, data) => {
+        alles.property_info = data[0]
+        console.log(body)
+        db.query(sql[1], [alles.property_info.property_name, body.propName], (err, data) => {
+            alles.plant_info = data
+            res.json(alles)
 
-})
+        })
+
+    })
 })
 
 
