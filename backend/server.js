@@ -52,7 +52,7 @@ app.post('/planten/:id', (req, res) => {
 app.post('/saveplant', (req, res) => {
     let id = req.body.id
     db.query("UPDATE plants SET plant_map = 1 WHERE plant_id=?", id, (err, data) => {
-        if(err){
+        if (err) {
             console.log(err)
         }
     })
@@ -125,38 +125,38 @@ app.get('/kenmerken', (req, res) => {
 })
 
 app.post('/kenmerken/:id', (req, res) => {
-  let id = req.body.id
+    let id = req.body.id
 
-let einde = []
-    const registerWatch = [{getProperties: ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants"] }, { getData: "SELECT * FROM properties  AS kenmerken JOIN property_watcher AS pw ON pw.property_id = kenmerken.property_id WHERE kenmerken.property_id=?" }, { postData: "UPDATE property_watcher SET property_watched=? WHERE property_id = ?" }]
-   
-  db.query(registerWatch[0].getProperties[0], req.body.id, (err, data) => {
+    let einde = []
+    const registerWatch = [{ getProperties: ["SELECT * FROM properties where property_id=?", "SELECT DISTINCT ?? FROM plants"] }, { getData: "SELECT * FROM properties  AS kenmerken JOIN property_watcher AS pw ON pw.property_id = kenmerken.property_id WHERE kenmerken.property_id=?" }, { postData: "UPDATE property_watcher SET property_watched=? WHERE property_id = ?" }]
+
+    db.query(registerWatch[0].getProperties[0], req.body.id, (err, data) => {
 
         let searchFor = data[0].property_name // naam van de property in database
-  
-  
+
+
         let go = db.query(registerWatch[0].getProperties[1], searchFor, (err, data) => {
-            einde.push({property_data: data})
+            einde.push({ property_data: data })
         })
 
         db.query(registerWatch[1].getData, id, (err, data) => {
             let result = data
 
-            einde.push({watch_data: data[0]})
+            einde.push({ watch_data: data[0] })
             postData(Number(result[0].property_watched))
-    
+
             function postData(result) {
                 db.query(registerWatch[2].postData, [(result + 1), id], (err, data) => {
                 })
             }
-return res.json(einde)
-    
+            return res.json(einde)
+
         })
     })
-   
-  
 
- 
+
+
+
 })
 
 app.post('/kenmerken/:id/:id', (req, res) => {
@@ -180,23 +180,53 @@ app.post('/kenmerken/:id/:id', (req, res) => {
 
 
 app.post('/rekenen', (req, res) => {
-    if(req.body[0].method === 'maxPlant'){
-        console.log('plant')
-    const sql = "SELECT plants.plant_id,  plants.plant_name, plants.plant_family, plants.plant_hoofdgroep, plants.plant_color, plants.invasive, pw.plant_watched FROM plants LEFT JOIN plant_watcher AS pw ON plants.plant_id=pw.plant_id";
-    db.query(sql, (err, data) => {
-        // console.log(data)
+    if (req.body[0].method === 'maxPlant') {
+        const sql = "SELECT plants.plant_id,  plants.plant_name, plants.plant_family, plants.plant_hoofdgroep, plants.plant_color, plants.invasive, pw.plant_watched FROM plants LEFT JOIN plant_watcher AS pw ON plants.plant_id=pw.plant_id";
+        db.query(sql, (err, data) => {
+            let plants = data;
+            let maxValue = 0; // set this value as number
+            let maxPlant;
+            plants.map((plant) => {
+                maxValue = Math.max(maxValue, Number(plant.plant_watched));
+                if (maxValue === Number(plant.plant_watched)) { // find the plant that has the highest value for plant_watched
+                    maxPlant = plant;
+                }
+            });
 
-        return res.json(data)
-    })
-}
-if(req.body[0].method === 'maxProperty'){
-    console.log('prop')
-    const sql = "SELECT properties.property_id, properties.property_name, pw.property_watched FROM properties LEFT JOIN property_watcher AS pw ON properties.property_id=pw.property_id";
-    db.query(sql, (err, data) => {
+            return res.json(maxPlant)
+        })
+    }
+    if (req.body[0].method === 'maxProperty') {
+        const sql = "SELECT properties.property_id, properties.property_name, pw.property_watched FROM properties LEFT JOIN property_watcher AS pw ON properties.property_id=pw.property_id";
+        db.query(sql, (err, data) => {
+            let maxValue = 0;
+            let maxProperty;
+            data.map((property) => {
+                maxValue = Math.max(maxValue, Number(property.property_watched));
+                if (maxValue === Number(property.property_watched)) {
+                    maxProperty = property
+                }
 
-        return res.json(data)
-    })
-}
+            });
+            return res.json(maxProperty)
+        })
+    }
+
+    if (req.body[0].method === 'suggestion1') {
+        const sql = "SELECT plants.*, pw.plant_watched FROM plants LEFT JOIN plant_watcher AS pw ON pw.plant_id=plants.plant_id WHERE ?? = ? ";
+        db.query(sql, [req.body[0].helper[1], req.body[0].helper[0]], (err, data) => {
+            let plants = data;
+            let minValue = 1290867; // set this value as number
+            let minPlant;
+            plants.map((plant) => {
+                minValue = Math.min(minValue, Number(plant.plant_watched));
+                if (minValue == Number(plant.plant_watched)) { // find the plant that has the highest value for plant_watched
+                    minPlant = plant;
+                }
+            });
+            return res.json(minPlant)
+        })
+    }
 })
 
 
