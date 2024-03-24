@@ -48,6 +48,28 @@ app.post('/planten/:id', (req, res) => {
     })
 
 })
+
+app.post('/saveplant', (req, res) => {
+    let id = req.body.id
+    db.query("UPDATE plants SET plant_map = 1 WHERE plant_id=?", id, (err, data) => {
+        if(err){
+            console.log(err)
+        }
+    })
+})
+
+
+
+app.get('/addplanten', (req, res) => {
+    const sql = "SELECT * FROM plants";
+    db.query(sql, (err, data) => {
+        console.log(data)
+
+        return res.json(data)
+    })
+})
+
+
 app.get('/planten', (req, res) => {
     const sql = "SELECT * FROM plants";
     db.query(sql, (err, data) => {
@@ -56,6 +78,17 @@ app.get('/planten', (req, res) => {
         return res.json(data)
     })
 })
+
+app.get('/plantenmap', (req, res) => {
+    const sql = "SELECT * FROM plants WHERE plant_map=1";
+    db.query(sql, (err, data) => {
+        console.log(data)
+
+        return res.json(data)
+    })
+})
+
+
 
 app.get('/anders', (req, res) => {
     const sql = "SELECT plant_hoofdgroep FROM plants";

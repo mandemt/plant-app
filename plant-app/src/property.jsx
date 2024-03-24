@@ -65,18 +65,37 @@ class Property extends React.Component {
             watchData = this.state.results[1].watch_data.property_watched
             console.log(watchData)
             return (
-                <h3>{watchData}</h3>
+                <h3>Aantal keer bekeken: {watchData}</h3>
 
             )
         }
     }
 
+    titleGenerator() {
+        let properties;
+        if (this.state.results.length !== 0) {
+            properties = this.state.results
+            console.log(properties[1].watch_data.property_name)
+            return(
+                <h1>
+               Kenmerk:   {properties[1].watch_data.property_name}  
+                </h1>
+            )
+        }
+        else {
+            return (
+                <h1>loadin</h1>
+            )
+        }
+       
+
+    }
 
     render() {
 
         return (
             <div>
-
+                {this.titleGenerator()}
                 {this.plantMap()}
                 {this.watchMap()}
             </div>

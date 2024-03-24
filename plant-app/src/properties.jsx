@@ -33,6 +33,7 @@ class Properties extends React.Component {
         return (
 
             <div>
+                <h1>{this.props.title}</h1>
               {this.state.properties.map((property) => {
                             return (
                                 <div>

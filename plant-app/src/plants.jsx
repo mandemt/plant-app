@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import './plants.scss';
+import discoverIcon from './img/ontdekken.svg'
 
 class Plants extends React.Component {
     componentDidMount() {
@@ -14,7 +16,6 @@ class Plants extends React.Component {
             incomplete: []
         }
         this.fetchPlants = this.fetchPlants.bind(this)
-        this.postPlants = this.postPlants.bind(this)
         this.changeValue = this.changeValue.bind(this)
 
     }
@@ -25,67 +26,39 @@ class Plants extends React.Component {
             .catch(error => console.log(error))
 
     }
-    postPlants(e) {
-        let incomplete = []
-        const postData = [{
-            name: this.state.plantname,
-            family: this.state.plantfamily,
-            group: this.state.plantgroup,
-            color: this.state.plantcolor,
-            invasive: this.state.invasive
-        }]
-        let formFields = Object.keys(postData[0])
 
-        formFields.forEach((data) => {
-            if (postData[0][data] == undefined) {
-                incomplete.push(data)
-                this.setState({errorMessage: "de volgende velden zijn niet ingevuld:" + incomplete})
-            }
-
-
-        })
-        this.setState({ incomplete: incomplete })
-        if (incomplete.length == 0) {
-            fetch('http://localhost:3307/anders', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData)
-            })
-        }
-        this.fetchPlants()
-    }
 
     changeValue(e) {
         let stateName = e.target.id
         this.setState({ [e.target.id]: e.target.value })
     }
-
-    render() {
+    planten() {
         let errorMessage = this.state.errorMessage
-        console.log(this.state.plants[0])
-        let planten = this.state.plants.map(plant => {
-            let link = plant.plant_id
-            return (
-                <a href={'planten/' + link} onClick={() => checkID(e)} key={plant.plant_id}>{plant.plant_name}</a>
-            )
-        })
+        let planten = this.state.plants
+        return (
+            <ul>
+                {planten.map(plant => {
+                    return (
+                       <li><a href={'planten/' + plant.plant_id} onClick={() => checkID(e)} key={plant.plant_id}>{plant.plant_name}</a></li> 
+                    )
+                })
+                }
+                </ul>)
+    }
+                render() {
+
 
         return (
 
-            <div className="plantinputs">
-                Plant naam  <input id="plantname" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-                Plant familie  <input id="plantfamily" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-                Plant hoofdgroep  <input id="plantgroup" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-                Plant bloemkleur  <input id="plantcolor" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-                Invasief <input id="invasive" onChange={(e) => { this.changeValue(e) }} type="text"></input>
-               <button value="['tom','plant']" onClick={(e) => this.postPlants(e)}>post plant</button>
-               {errorMessage}
-                {planten}
-            </div>
-        )
+                <div className="plants">
+                    <div className="banner">
+                    <h1>{this.props.title}</h1>
+                    <img src={discoverIcon}></img>
+                    </div>
+                    {this.planten()}
+                </div>
+                )
 
     }
 }
-export default Plants;
+                export default Plants;
