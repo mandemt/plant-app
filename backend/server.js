@@ -178,6 +178,33 @@ app.post('/kenmerken/:id/:id', (req, res) => {
 
 
 
+
+app.post('/rekenen', (req, res) => {
+    if(req.body[0].method === 'maxPlant'){
+        console.log('plant')
+    const sql = "SELECT plants.plant_id,  plants.plant_name, plants.plant_family, plants.plant_hoofdgroep, plants.plant_color, plants.invasive, pw.plant_watched FROM plants LEFT JOIN plant_watcher AS pw ON plants.plant_id=pw.plant_id";
+    db.query(sql, (err, data) => {
+        // console.log(data)
+
+        return res.json(data)
+    })
+}
+if(req.body[0].method === 'maxProperty'){
+    console.log('prop')
+    const sql = "SELECT properties.property_id, properties.property_name, pw.property_watched FROM properties LEFT JOIN property_watcher AS pw ON properties.property_id=pw.property_id";
+    db.query(sql, (err, data) => {
+
+        return res.json(data)
+    })
+}
+})
+
+
+
+
+
+
+
 app.listen(3307, () => {
     console.log('server luistert')
 })

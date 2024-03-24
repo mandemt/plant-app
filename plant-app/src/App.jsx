@@ -10,6 +10,8 @@ import Plant from '../src/plant.jsx';
 import Properties from './properties.jsx';
 import Property from './property.jsx'
 import PropertyList from './propertylist.jsx'
+import Calculate from './calculate.jsx'
+
 
 function App() {
   return (
@@ -33,7 +35,8 @@ function App() {
           </Route>
           <Route path={"/kenmerken/:id/:id"} element={<PropertyList />}>
           </Route>
-
+          <Route path={"/rekenen"} element={<Calculate />}>
+          </Route>
 
 
         </Routes>
