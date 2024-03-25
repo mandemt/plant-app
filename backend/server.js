@@ -120,8 +120,10 @@ app.get('/anders', (req, res) => {
 
 app.post('/anders', (req, res) => {
     let insertData = req.body[0]
-    const sql = ["INSERT INTO plants (plant_id, plant_name, plant_family, plant_hoofdgroep, plant_color, invasive) VALUES (NULL, ?,?,?,?,?)",
-        "INSERT INTO plant_watcher (plant_id, plant_watched) VALUES((SELECT MAX(plant_id) FROM plants), 0)"]
+    let plantid;
+    const sql = ["INSERT INTO plants (plant_id, plant_name, plant_family, plant_hoofdgroep, plant_color, invasive, plant_map) VALUES (NULL, ?,?,?,?,?,0)",
+        "INSERT INTO plant_watcher (plant_id, plant_watched) VALUES((SELECT MAX(plant_id) FROM plants), 0)",
+        "INSERT into plant_database.plant_prop_watcher(plant_id, property_id, plop_watch) select distinct ?, property_id, 0 from plant_database.properties"]
     let insertplant = db.query(sql[0], [insertData.name, insertData.family, insertData.group, insertData.color, insertData.invasive], (err, data) => {
         if (err) {
             console.log(err)
@@ -131,8 +133,11 @@ app.post('/anders', (req, res) => {
         if (err) {
             console.log(err)
         }
+        let setwatchers = db.query(sql[2],data.insertId, (err,data) => {
+        })
         return res.json(data)
     })
+   
 
 })
 
