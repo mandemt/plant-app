@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import plantenMapIcon from './img/plantenmap.svg'
-import './plantenmap.scss';
+import './styling/plantenmap.scss';
 
 class Plantenmap extends React.Component {
     componentDidMount() {

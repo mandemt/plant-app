@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Plants from '../src/plants.jsx';
 import Plantenmap from '../src/plantenmap.jsx';
-import './typografie.scss';
+import './styling/typografie.scss';
 import AddPlants from '../src/addplants.jsx';
 
 import Plant from '../src/plant.jsx';

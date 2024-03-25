@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import './styling/suggestion.scss'
 class Calculate extends React.Component {
     componentDidMount() {
         this.fetchProperties()
@@ -92,11 +92,17 @@ class Calculate extends React.Component {
         }
         else {
             if (this.state.properties.length !== 0) {
-            let naam = this.state.properties.property_name
+                let naam = this.state.properties.property_name
 
                 this.fetchNewSuggestion([this.state.plants[naam], naam])
             }
         }
+    }
+    confirmedSuggestion(){
+        console.log('confirm')
+    }
+    declineSuggestion(){
+        console.log('decline')
     }
     render() {
 
@@ -111,9 +117,15 @@ class Calculate extends React.Component {
                 <br />
                 <br />
                 <br />
-                <h1>Een tweede stap is om de minst bekeken plant waarvan het meest bekeken kenmerk van de meest bekeken plant overeenkomt.</h1>
+                <h1>Ontdekken: Een tweede stap is om de minst bekeken plant waarvan het meest bekeken kenmerk van de meest bekeken plant overeenkomt.</h1>
                 {this.suggestPlantfromProperty()}
-                {this.state.suggestion.plant_name} is het minst bekeken, van het meest bekeken kenmerk {this.state.properties.property_name} van de meest bekeken plant {this.state.plants.plant_name}
+                <a href={"/planten/" + this.state.suggestion.plant_id}> <h1>{this.state.suggestion.plant_name}</h1></a> is het minst bekeken, van het meest bekeken kenmerk <a href={"/kenmerken/" + this.state.properties.property_id} ><h1>{this.state.properties.property_name}</h1></a> van de meest bekeken plant <a href={"/planten/" + this.state.plants.plant_id}> <h1>{this.state.plants.plant_name}</h1></a>
+                <div className="confirm">
+                    <p>Geef hier aan of je blij bent met deze suggestie:</p>
+                    <div>
+                    <button onClick={() => this.confirmedSuggestion()}>V</button><button onClick={() => this.declineSuggestion()}>X</button>
+                    </div>
+                    </div>
             </div>
         )
 

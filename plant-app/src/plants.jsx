@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './plants.scss';
+import './styling/plants.scss';
 import discoverIcon from './img/ontdekken.svg'
 
 class Plants extends React.Component {
