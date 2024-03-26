@@ -117,3 +117,15 @@ button {
 .showinfo{
     visibility: hidden;
 }
+
+.plantinputs{
+    text-align:center;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    input{
+        width: 60%;
+        margin: 0 auto;
+        
+    }
+}

@@ -98,11 +98,26 @@ class Calculate extends React.Component {
             }
         }
     }
-    confirmedSuggestion(){
+    confirmedSuggestion() {
         console.log('confirm')
     }
-    declineSuggestion(){
+    declineSuggestion() {
         console.log('decline')
+    }
+    algorithm2(e) {
+        console.log(e)
+        fetch('http://localhost:3307/rekenen', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify([{ method: 'plantvisit', helper: e }])
+        })
+            .then((data) => data.json())
+            .then((data) => this.setState({ suggestion: data }))
+        return (
+            <>nr 2</>
+        )
     }
     render() {
 
@@ -123,9 +138,19 @@ class Calculate extends React.Component {
                 <div className="confirm">
                     <p>Geef hier aan of je blij bent met deze suggestie:</p>
                     <div>
-                    <button onClick={() => this.confirmedSuggestion()}>V</button><button onClick={() => this.declineSuggestion()}>X</button>
+                        <button onClick={() => this.confirmedSuggestion()}>V</button><button onClick={() => this.declineSuggestion()}>X</button>
                     </div>
-                    </div>
+                </div>
+                <h1>Bezoek aan plant , ID: 387</h1>
+                <ol>
+                    <li>Kijken of deze een plant_watched groter dan 0 heeft</li>
+                    
+                    <li>Kijken of deze plant een plop_watched heeft</li>
+                    <li>Kijken welk kenmerk de meeste keren bekeken is </li>
+                    <li>Deze voorstellen</li>
+                    <li>resultaat:</li>
+                </ol>
+                {this.algorithm2(387)}
             </div>
         )
 

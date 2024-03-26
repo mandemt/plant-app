@@ -50,15 +50,15 @@ app.post('/planten/:id', (req, res) => {
 })
 
 app.post('/planten/:id/register', (req, res) => {
-    console.log(req.body[1])
-
     let plantid = req.body[0]
     db.query("SELECT property_id FROM properties WHERE property_name=?", req.body[1], (err, data) => {
+        console.log(data)
         let id = data[0].property_id
         db.query("UPDATE plant_prop_watcher SET plop_watch = plop_watch + 1  WHERE plant_id=? AND property_id=?", [plantid, id], (err, data) => {
             if (err) {
                 console.log(err)
             }
+            console.log('jojo')
         })
 
     })
@@ -250,6 +250,16 @@ app.post('/rekenen', (req, res) => {
             });
             return res.json(minPlant)
         })
+    }
+
+    if (req.body[0].method === 'plantvisit') {
+       let plantID = req.body[0].helper
+       console.log(plantID)
+       const sql = "SELECT property_id, plop_watch FROM plant_prop_watcher where plant_id=? ";
+       db.query(sql,plantID, (err, data) => { 
+        console.log(data)
+       })
+
     }
 })
 

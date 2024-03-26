@@ -30,7 +30,6 @@ class Plants extends React.Component {
 
     }
     registerWatch(plantWatchInfo){
-        console.log(plantWatchInfo)
         fetch('http://localhost:3307/planten/:id/register', {
             method: 'POST',
             headers: {
@@ -54,6 +53,7 @@ class Plants extends React.Component {
     }
     toggleClass(e) {
         let plantWatchInfo = [e.target.id]
+        console.log(plantWatchInfo)
         let property = e.target.className
         if(this.state[property] === 'set'){
             this.setState({[property] : null})
@@ -81,11 +81,10 @@ class Plants extends React.Component {
                                     <button onClick={() => this.savePlant(plant.plant_id)}>sla plant op</button>
 
                                     <p className="plant_family" id={plant.plant_id} onClick={(e) => this.toggleClass(e)}> Plant familie:<p className={this.state.plant_family ? null : "showinfo"}>{plant.plant_family}</p></p>
-                                    <p className="color" onClick={(e) => this.toggleClass(e)}> Plant kleur:<p className={this.state.color ? null : "showinfo"}>{plant.plant_color}</p></p>
-                                    <p className="hoofdgroep" onClick={(e) => this.toggleClass(e)}> Plant hoofdgroep:<p className={this.state.hoofdgroep ? null : "showinfo"}>{plant.plant_hoofdgroep}</p></p>
-                                    <p className="plantid" onClick={(e) => this.toggleClass(e)}> Plant ID:<p className={this.state.plantid ? null : "showinfo"}>{plant.plant_id}</p></p>
-                                    <p className="bekeken" onClick={(e) => this.toggleClass(e)}> Plant bekeken:<p className={this.state.bekeken ? null : "showinfo"}>{plant.plant_watched}</p></p>
-                                    <p className="invasief" onClick={(e) => this.toggleClass(e)}> Plant invasief:<p className={this.state.invasief ? null : "showinfo"}>{plant.invasive}</p></p>
+                                    <p className="plant_color" id={plant.plant_id} onClick={(e) => this.toggleClass(e)}> Plant kleur:<p className={this.state.plant_color ? null : "showinfo"}>{plant.plant_color}</p></p>
+                                    <p className="plant_hoofdgroep" id={plant.plant_id} onClick={(e) => this.toggleClass(e)}> Plant hoofdgroep:</p><h2 className={this.state.plant_hoofdgroep ? null : "showinfo"}>{plant.plant_hoofdgroep}</h2>
+                                    <p className="plant_watched" > Plant bekeken: {plant.plant_watched}</p>
+                                    <p className="invasive" id={plant.plant_id} onClick={(e) => this.toggleClass(e)}> Plant invasief:<p className={this.state.invasive ? null : "showinfo"}>{plant.invasive}</p></p>
 
                                 </ul>
 

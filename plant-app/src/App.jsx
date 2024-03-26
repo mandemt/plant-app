@@ -5,6 +5,7 @@ import Plants from '../src/plants.jsx';
 import Plantenmap from '../src/plantenmap.jsx';
 import './styling/typografie.scss';
 import AddPlants from '../src/addplants.jsx';
+import IdentifyPlant from '../src/identifyplant.jsx';
 
 import Plant from '../src/plant.jsx';
 import Properties from './properties.jsx';
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route path={"/rekenen"} element={<Calculate />}>
           </Route>
+          <Route path={"/identify"} element={<IdentifyPlant />}>
+          </Route>
+
 
 
         </Routes>
